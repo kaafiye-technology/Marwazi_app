@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, Modal } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'; // Date picker
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Table, Row, Rows } from 'react-native-table-component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -8,21 +8,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const StatementScreen = () => {
   const [selectedItem, setSelectedItem] = useState({ name: 'جميع التاريخ', value: '1' });
-  const [isDropdownVisible, setDropdownVisible] = useState(false); // Modal visibility state
-  const [fromDate, setFromDate] = useState(new Date('2000-01-01')); // Default start date
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [fromDate, setFromDate] = useState(new Date('2000-01-01'));
   const [toDate, setToDate] = useState(new Date());
-  const [showFromDatePicker, setShowFromDatePicker] = useState(false); // Controls visibility of fromDate picker
-  const [showToDatePicker, setShowToDatePicker] = useState(false); // Controls visibility of toDate picker
+  const [showFromDatePicker, setShowFromDatePicker] = useState(false);
+  const [showToDatePicker, setShowToDatePicker] = useState(false);
   const [isGenerated, setIsGenerated] = useState(false);
   const [marks, setMarks] = useState([]);
 
   const url = 'https://db.al-marwaziuniversity.so/api/report';
 
-  // Utility function to format date to 'YYYY-MM-DD'
   const formatDate = (date) => {
     if (!date) return '';
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
@@ -35,8 +34,8 @@ const StatementScreen = () => {
         const values = {
           sp: 547,
           std_id: userData.result.auto_id,
-          from: formatDate(fromDate), // Format fromDate
-          to: formatDate(toDate) // Format toDate
+          from: formatDate(fromDate),
+          to: formatDate(toDate)
         };
         const response = await axios.post(url, values);
         const result = response.data.result;
@@ -52,7 +51,7 @@ const StatementScreen = () => {
     if (isGenerated) {
       fetchMarks();
     }
-  }, [isGenerated]);
+  }, [isGenerated, fromDate, toDate, selectedItem]); // Add dependencies
 
   const options = [
     { name: 'جميع التاريخ', value: '1' },
@@ -61,19 +60,19 @@ const StatementScreen = () => {
 
   const handleSelect = (item) => {
     setSelectedItem(item);
-    setDropdownVisible(false); // Close the modal when an item is selected
+    setDropdownVisible(false);
     
     if (item.value === '1') {
-      // If 'جميع التاريخ' is selected, set the fromDate to '2000-01-01'
       setFromDate(new Date('2000-01-01'));
-      setToDate(new Date()); // Keep toDate as current date
+      setToDate(new Date());
     } else if (item.value === '2') {
-      // If 'مخصص' is selected, set both fromDate and toDate to current date
       const currentDate = new Date();
       setFromDate(currentDate);
       setToDate(currentDate);
     }
+    setIsGenerated(true); // Trigger fetch on selection change
   };
+
 
   const tableHead = ['الباقي', 'المدفوع', 'الرسوم', 'الرسوم', 'التاريخ'];
   const tableRows = marks.map(item => [item.Balance, item.CR, item.DR, item.Description, item.date]);
@@ -196,7 +195,9 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: 'white',
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 50, // Add this line for bottom margin
+
   },
   headerImage: {
     height: 200,
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 19,
     fontWeight: 'bold',
-    color: '#FFFF00',
+    color: '#FF9800',
     alignSelf: 'center',
     marginBottom: 8
   },

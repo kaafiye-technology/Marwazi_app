@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const screenWidth = Dimensions.get('window').width;
 
 const AttendanceScreen = () => {
-  const [selectedItem, setSelectedItem] = useState({ name: 'الجميع', value: '54' });
+  const [selectedItem, setSelectedItem] = useState({ name: 'الجميع', id: '' });
   const [isDropdownVisible, setDropdownVisible] = useState(false); // Modal visibility state
   const [options, setOptions] = useState([]); // Dropdown options from API
   const [loading, setLoading] = useState(true); // For loading state
@@ -43,7 +43,7 @@ const AttendanceScreen = () => {
   };
 
   // Function to fetch subject data
-  const fetchSubjectData = async () => {
+  const fetchSubjectData = async (item) => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
       if (jsonValue !== null) {
@@ -54,7 +54,7 @@ const AttendanceScreen = () => {
           auto_id: userData.result.auto_id,
           semester_id: userData.result.semester_id,
           class_id: userData.result.class_id,
-          course_id: selectedItem.value,
+          course_id: item.id || '',
         });
 
         // Save the response data to subject state
@@ -69,26 +69,33 @@ const AttendanceScreen = () => {
   // Fetch options when the component mounts
   useEffect(() => {
     fetchDropdownOptions();
-    fetchSubjectData();
-  }, [selectedItem]); // Re-fetch data when selectedItem changes
+    
+    fetchSubjectData(selectedItem);
+  }, []); // Re-fetch data when selectedItem changes
 
   const handleSelect = (item) => {
+    console.log('selected:', item);
     setSelectedItem(item);
+    fetchSubjectData(item);
     setDropdownVisible(false); // Close the modal when an item is selected
   };
+
+  // Ensure the correct type for attend and absents
+  const attend = subject.result.length > 0 ? Number(subject.result[0]?.attend) : 0;  // Convert to number
+  const absents = subject.result.length > 0 ? Number(subject.result[0]?.absents) : 0;  // Convert to number
 
   // PieChart data
   const data = [
     {
       name: 'الغياب',
-      population: subject.result.length > 0 ? subject.result[0]?.absents : 0,
+      value: absents,  // Use the parsed number for absents
       color: '#FF6384',
       legendFontColor: '#7F7F7F',
       legendFontSize: 15,
     },
     {
       name: 'الحضور',
-      population: subject.result.length > 0 ? subject.result[0]?.attend : 0,
+      value: attend,  // Use the parsed number for attendance
       color: '#36A2EB',
       legendFontColor: '#7F7F7F',
       legendFontSize: 15,
@@ -151,7 +158,7 @@ const AttendanceScreen = () => {
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         }}
-        accessor="population"
+        accessor="value"
         backgroundColor="transparent"
         paddingLeft="15"
         absolute
@@ -167,19 +174,19 @@ const AttendanceScreen = () => {
         <View style={styles.detailText}>
           <Icon name="check-circle" size={20} color="green" style={styles.icon} />
           <Text style={styles.text}>
-            عدد الحضور: <Text style={styles.boldText}>{subject.result.length > 0 ? subject.result[0]?.attend : 'N/A'}</Text>
+            عدد الحضور: <Text style={styles.boldText}>{attend || 'N/A'}</Text>
           </Text>
         </View>
         <View style={styles.detailText}>
           <Icon name="times-circle" size={20} color="red" style={styles.icon} />
           <Text style={styles.text}>
-            عدد الغياب: <Text style={styles.boldText}>{subject.result.length > 0 ? subject.result[0]?.absents : 'N/A'}</Text>
+            عدد الغياب: <Text style={styles.boldText}>{absents || 'N/A'}</Text>
           </Text>
         </View>
         <View style={styles.detailText}>
           <Icon name="percent" size={20} color="#333" style={styles.icon} />
           <Text style={styles.text}>
-            معدل الحضور: <Text style={styles.boldText}>{subject.result.length > 0 ? ((subject.result[0]?.attend / subject.result[0]?.periods) * 100).toFixed(2) + '%' : 'N/A'}</Text>
+            معدل الحضور: <Text style={styles.boldText}>{attend && subject.result[0]?.periods ? ((attend / subject.result[0]?.periods) * 100).toFixed(2) + '%' : 'N/A'}</Text>
           </Text>
         </View>
       </View>

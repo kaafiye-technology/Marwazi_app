@@ -3,16 +3,22 @@ import { View, Text, StyleSheet, FlatList,TouchableOpacity } from 'react-native'
 import axios from 'axios';
 import { Link ,router} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SemesterItem = ({ semester }) => {
     return (
-      <TouchableOpacity onPress={() => router.push('timetable/timetable?semester_id='+semester.id)}>
+      <TouchableOpacity onPress={() => router.push('timetable/timetable?semester_id='+semester.day_id)}>
 
       <View style={styles.itemContainer}>
+      <Text style={styles.itemText}>{semester.day}</Text>
+
         <View style={styles.iconContainer}>
-          <Text style={styles.iconText}>{semester.id}</Text>
+          
+        <Icon name="calendar-clock" size={24} color="#fff" />
+
         </View>
-        <Text style={styles.itemText}>{semester.name}</Text>
+        
+
       </View>
       </TouchableOpacity>       
 
@@ -30,8 +36,10 @@ const SemestersList = () => {
     if (jsonValue != null) {
         const userData = JSON.parse(jsonValue);
         const values = {
-            sp: 542,
-            class_id: userData.result.class_id
+            sp: 616,
+            class_id: userData.result.class_id,
+            semester_id: userData.result.semester_id
+
         }
 
         const response = await axios.post(url,values);
@@ -65,9 +73,9 @@ console.log('semester:', semesters)
 
 <View style={styles.itemContainer}>
       <View style={styles.iconContainer}>
-        <Text style={styles.iconText}>{item.id}</Text>
+      <Icon name="calendar-clock" size={24} color="#fff" />
       </View>
-      <Text style={styles.itemText}>{item.semester}</Text>
+      <Text style={styles.itemText}>{item.day}</Text>
     </View>
 
    
@@ -76,10 +84,10 @@ console.log('semester:', semesters)
 
   return (
     <View style={styles.container}>
-        <Text style={styles.semes}>Semesters</Text>
+        <Text style={styles.semes}>الأيام</Text>
         <FlatList
         data={semesters}
-        keyExtractor={(item) => item.id.toString()} // Assuming each semester has an `id` field
+        keyExtractor={(item) => item.day_id.toString()} // Assuming each semester has an `id` field
         renderItem={({ item }) => <SemesterItem semester={item} />} // Assuming the semester number is in `item.number`
      //  renderItem={renderItem}
      />
@@ -100,7 +108,11 @@ const styles = StyleSheet.create({
   },
   semes:{
     color:'white',
-    fontSize: 20
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    marginBottom: 15,
+
   },
   itemContainer: {
     flexDirection: 'row',
@@ -114,6 +126,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 3,
+        justifyContent: 'flex-end', // Aligns icon and text to the right
+
   },
   iconContainer: {
     width: 40,
@@ -128,10 +142,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18,
+    
   },
   itemText: {
     fontSize: 18,
     color: '#333',
+    margin: 10
+
   },
 });
 

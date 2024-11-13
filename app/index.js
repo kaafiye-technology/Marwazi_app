@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -56,7 +56,7 @@ if( update== 'Not Updated' ){
     CheckVersion();
   }, []);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* University Logo */}
       <View style={styles.logoContainer}>
         <Image source={{uri: 'https://al-marwaziuniversity.so/uploads/ktc_edit_sp/logo/marwaziunivbersity.png_ktceditsp_20240521065859.png' }} style={styles.headerImg} alt='Logo' />
@@ -72,7 +72,7 @@ if( update== 'Not Updated' ){
           <Icon name="account" size={30} color="#9C27B0"  />
           <Text style={styles.featureText}>ملف الطالب</Text>
         </Pressable>
-        <Pressable style={styles.feature}  onPress={() => router.push('/timetable/timetable')}>
+        <Pressable style={styles.feature}  onPress={() => router.push('/timetable/semesters')}>
           <Icon name="calendar-outline" size={30} color="#2196F3" />
           <Text style={styles.featureText}>الجدول الدراسي</Text>
         </Pressable>
@@ -97,8 +97,16 @@ if( update== 'Not Updated' ){
           <Text style={styles.featureText}>التقييم</Text>
         </Pressable>
        
+        <Pressable style={styles.feature} onPress={() => router.push('/complaint/complaint')}>
+          <Icon name="alert-circle-outline" size={30} color="red"  />
+          <Text style={styles.featureText}>الشكاوى</Text>
+        </Pressable>
+        <Pressable style={styles.feature} onPress={() => router.push('/notification/MessageScreen')}>
+          <Icon name="bell" size={30} color="#2196F3"  />
+          <Text style={styles.featureText}>إشعارات</Text>
+        </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -116,6 +124,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
+    marginBottom: -40,
+    marginTop: -20,
+
   },
   featuresContainer: {
     marginTop: 20,
@@ -124,10 +135,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse', // Reverse the icon and text
     alignItems: 'center',
     backgroundColor: '#FFF',
-    padding: 15,
-    marginVertical: 10,
-    borderRadius: 10,
-    elevation: 2,
+    padding: 13,
+    marginVertical: 6,
+    borderRadius: 15,
+    elevation: 4,
   },
   featureText: {
     fontSize: 18,

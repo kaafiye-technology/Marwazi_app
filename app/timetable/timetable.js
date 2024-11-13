@@ -37,7 +37,9 @@ import axios from 'axios';
         const values = {
             sp: 545,
             class_id: userData.result.class_id,
-            semester_id: userData.result.semester_id
+            semester_id: userData.result.semester_id,
+            day_id:semester_id
+
         }
 
         const response = await axios.post(url,values);

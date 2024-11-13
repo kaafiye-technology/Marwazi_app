@@ -17,6 +17,9 @@ const AppLayout = () => {
        <Stack.Screen name="finance/report" options={{headerTitle: "الرسومات"}} />
 
        <Stack.Screen name="examination/transcript" options={{headerTitle: "الدرجات"}} />
+       <Stack.Screen name="complaint/complaint" options={{headerTitle: "الشكاوى"}} />
+       <Stack.Screen name="notification/MessageScreen" options={{headerTitle: "إشعارات"}} />
+       <Stack.Screen name="notification/NotificationDetail" options={{headerTitle: "إشعارات"}} />
 
        <Stack.Screen name="examination/semesters" options={{headerTitle: "نتائج الامتحانات"}} />
        <Stack.Screen name="examination/marks" options={{headerTitle: "Marks"}} />

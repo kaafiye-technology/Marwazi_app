@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   text: {
     margin: 6,
     textAlign: 'center',
+    
   },
   footer: {
     height: 40,

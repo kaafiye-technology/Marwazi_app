@@ -100,6 +100,10 @@ const ProfileScreen = () => {
       <TouchableOpacity style={styles.logoutButton} onPress={() => router.push('/welcome/login')}>
         <Text style={styles.logoutButtonText}>تسجيل خروج</Text>
       </TouchableOpacity>
+       {/* Change Button */}
+       <TouchableOpacity style={styles.logoutButton} onPress={() => router.push('/users/change')}>
+        <Text style={styles.logoutButtonText}>تغيير كلمة المرور</Text>
+      </TouchableOpacity>
 
       {/* Academic Information */}
       <View style={styles.academicInfoContainer}>
