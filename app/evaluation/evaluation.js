@@ -202,7 +202,7 @@ const SemesterSubjects = () => {
       <TouchableOpacity
         style={[
           styles.saveButton,
-          { backgroundColor: isAnyRatingGiven() ? '#0044cc' : '#cccccc' }
+          { backgroundColor: isAnyRatingGiven() ? '#236b17' : '#cccccc' }
         ]}
         onPress={handleSave}
         disabled={!isAnyRatingGiven()} // Disable the button if no rating is given

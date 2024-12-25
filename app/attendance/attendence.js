@@ -87,14 +87,14 @@ const AttendanceScreen = () => {
   // PieChart data
   const data = [
     {
-      name: 'الغياب',
+      name: 'Maqan',
       value: absents,  // Use the parsed number for absents
       color: '#FF6384',
       legendFontColor: '#7F7F7F',
       legendFontSize: 15,
     },
     {
-      name: 'الحضور',
+      name: 'Joogo',
       value: attend,  // Use the parsed number for attendance
       color: '#36A2EB',
       legendFontColor: '#7F7F7F',
@@ -186,7 +186,7 @@ const AttendanceScreen = () => {
         <View style={styles.detailText}>
           <Icon name="percent" size={20} color="#333" style={styles.icon} />
           <Text style={styles.text}>
-            معدل الحضور: <Text style={styles.boldText}>{attend && subject.result[0]?.periods ? ((attend / subject.result[0]?.periods) * 100).toFixed(2) + '%' : 'N/A'}</Text>
+    معدل الحضور: <Text style={styles.boldText}>{attend && subject.result[0]?.periods ? '%' + ((attend / subject.result[0]?.periods) * 100).toFixed(2) : 'N/A'}</Text>
           </Text>
         </View>
       </View>
@@ -270,9 +270,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   detailText: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: 'row-reverse', // Icons to the right
+    justifyContent: 'flex-start', // Align items correctly
+    alignItems: 'center', // Center items vertically
     marginBottom: 10,
     padding: 6,
   },

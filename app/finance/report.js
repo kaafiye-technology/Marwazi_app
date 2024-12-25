@@ -74,7 +74,7 @@ const StatementScreen = () => {
   };
 
 
-  const tableHead = ['الباقي', 'المدفوع', 'الرسوم', 'الرسوم', 'التاريخ'];
+  const tableHead = ['الباقي', 'المدفوع', 'رفع', 'الرسوم', 'التاريخ'];
   const tableRows = marks.map(item => [item.Balance, item.CR, item.DR, item.Description, item.date]);
 
   return (

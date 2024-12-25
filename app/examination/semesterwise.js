@@ -35,7 +35,7 @@ const { height, width } = Dimensions.get('window');
 
         const response1 = await axios.post(url, values1);
         const result1 = response1.data.result[0];
-        console.log('info',response1.data.result)
+       // console.log('info',response1.data.result)
         setUser(result1);
 
         const response2 = await axios.post(url, values2);
@@ -81,6 +81,7 @@ const { height, width } = Dimensions.get('window');
     { name: 'المستوى الثامن', value: '8' },
   ];
 
+  console.log('subjects:', subjects)
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* User Info Section */}

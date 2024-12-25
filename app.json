@@ -1,10 +1,9 @@
 {
   "expo": {
     "name": "Marwazi App",
-    "slug": "caawiye-marwazi-app",
-    "schema": "caawiye-marwazi-app",
-    "version": "1.0.2",
-   
+    "slug": "caawiye-marwazi",
+    "schema": "caawiye-marwazi",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
@@ -13,7 +12,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    
     "ios": {
       "supportsTablet": true
     },
@@ -23,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "versionCode": 3,
-      "package": "so.almarwazi.university"
+      "package": "so.almarwazi.univ"
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +35,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "252c7fdf-5edd-4cd0-b173-0f29b45ad29c"
+        "projectId": "5bdede1c-32c6-42c3-ba22-cb8af184f501"
       }
     }
   }

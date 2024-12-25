@@ -54,10 +54,13 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       {/* Profile Image */}
       <View style={styles.profileImageContainer}>
-        <Image
-          source={{ uri: 'https://al-marwaziuniversity.so/uploads/ktc_edit_sp/logo/marwaziunivbersity.png_ktceditsp_20240521065859.png' }}
-          style={styles.profileImage}
-        />
+      <Image
+  source={{
+    uri: user?.image || 'https://al-marwaziuniversity.so/uploads/ktc_edit_sp/logo/marwaziunivbersity.png_ktceditsp_20240521065859.png', // Fallback to placeholder if user.image is null
+  }}
+  style={styles.profileImage}
+/>
+
       </View>
 
       {/* User Name */}
