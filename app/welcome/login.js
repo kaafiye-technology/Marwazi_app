@@ -16,7 +16,7 @@ import { router } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"; // Using MaterialCommunityIcons
 
 export default function Login() {
-    const url = 'https://db.al-marwaziuniversity.so/api/report'
+    const url = 'https://mis.psu.edu.so/api/report'
   const [values, setValues] = useState({
     sp: 515,
     username: "",
@@ -66,17 +66,17 @@ export default function Login() {
 
   console.log("values:", values, "data:", data);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#236b17" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#44b4d4" }}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image
             source={{
-              uri: "https://al-marwaziuniversity.so/uploads/ktc_edit_sp/logo/marwaziunivbersity.png_ktceditsp_20240521065859.png",
+              uri: "https://mis.psu.edu.so/uploads/ktc_edit_sp/logo/logopsu.png_ktceditsp_20240924070249.png",
             }}
             style={styles.headerImg}
             alt="Logo"
           />
-          <Text style={styles.title}>مرحبا بكم في برنامج تيسير</Text>
+          <Text style={styles.title}>Log In</Text>
         </View>
 
         <View style={styles.form}>
@@ -120,7 +120,7 @@ export default function Login() {
           {/* Login Button */}
           <View style={styles.formAction}>
             <Button
-              title="تسجيل الدخول"
+              title="Signin"
               buttonStyle={styles.btn}
               onPress={handleLogin}
             />
@@ -189,15 +189,14 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   btn: {
-    backgroundColor: "#075eec",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#FF8C00",
+    borderColor: "#0a0a0a",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#FF8C00",
+    backgroundColor: "#0a0a0a",
   },
   error: {
     paddingVertical: 7,

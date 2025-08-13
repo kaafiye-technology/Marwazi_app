@@ -16,7 +16,7 @@ import axios from 'axios';
   //   ['فقه العبادات4', '67', 'passed'],
   // ];
   const App = () => {
-    const tableHead = ['المدفوع', 'الرسوم', 'التاريخ', ];
+    const tableHead = ['Date', 'Description', 'CR', ];
     // const tableData = [
     //   {course:'الفرائض2', total:'59.5', status:'passed'},
     //   {course:'قاعة بحث', total:'72', status:'passed'},
@@ -26,7 +26,7 @@ import axios from 'axios';
 
 
   const [marks, setMarks] = useState([]);
-  const url = 'https://db.al-marwaziuniversity.so/api/report'
+  const url = 'https://mis.psu.edu.so/api/report'
     const { semester_id } = useLocalSearchParams();
   const fetchMarks = async () => {
       
@@ -62,7 +62,7 @@ useEffect(()=>{
 },[])
 
 
-  const tableRows = marks.map(item => [ item.CR,item.Description,item.date]);
+  const tableRows = marks.map(item => [ item.date,item.Description,item.CR]);
 // Step 1: Extract the 'total' values
 const totalValues = marks.map(item => parseFloat(item.total));
 
@@ -76,7 +76,7 @@ console.log('Sum of totals:', sum);
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
         <Card containerStyle={styles.card}>
-          <Text h3 style={styles.title}>مدفوعات الطالب/ــة</Text>
+          <Text h3 style={styles.title}>Student Statement</Text>
           <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
             <Row data={tableHead} style={styles.head} textStyle={styles.headText} />
             <Rows data={tableRows} textStyle={styles.text} />
@@ -90,14 +90,14 @@ console.log('Sum of totals:', sum);
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#44b4d4',
   },
   container: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#236b17',
+    backgroundColor: '#44b4d4',
   },
   card: {
     width: '100%',
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   head: {
     height: 40,
-    backgroundColor: '#FF9800',
+    backgroundColor: '#44b4d4',
   },
   headText: {
     margin: 6,

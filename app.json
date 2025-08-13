@@ -1,17 +1,23 @@
 {
   "expo": {
-    "name": "Marwazi App",
-    "slug": "caawiye-marwazi",
-    "schema": "caawiye-marwazi",
-    "version": "1.2.0",
+    "name": "P S U",
+    "slug": "puntland-university",
+    "scheme": "psu",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -20,22 +26,14 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 3,
-      "package": "so.almarwazi.univ"
+      "package": "com.caawiye.puntlanduniversity"
     },
     "web": {
-      "bundler": "metro",
       "favicon": "./assets/logo.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
     "extra": {
-      "router": {
-        "origin": false
-      },
       "eas": {
-        "projectId": "5bdede1c-32c6-42c3-ba22-cb8af184f501"
+        "projectId": "73e54c1f-be38-454c-bf94-757defd36ca9"
       }
     }
   }

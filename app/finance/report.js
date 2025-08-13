@@ -7,7 +7,7 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const StatementScreen = () => {
-  const [selectedItem, setSelectedItem] = useState({ name: 'جميع التاريخ', value: '1' });
+  const [selectedItem, setSelectedItem] = useState({ name: 'All Date', value: '1' });
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [fromDate, setFromDate] = useState(new Date('2000-01-01'));
   const [toDate, setToDate] = useState(new Date());
@@ -16,7 +16,7 @@ const StatementScreen = () => {
   const [isGenerated, setIsGenerated] = useState(false);
   const [marks, setMarks] = useState([]);
 
-  const url = 'https://db.al-marwaziuniversity.so/api/report';
+  const url = 'https://mis.psu.edu.so/api/report';
 
   const formatDate = (date) => {
     if (!date) return '';
@@ -54,8 +54,8 @@ const StatementScreen = () => {
   }, [isGenerated, fromDate, toDate, selectedItem]); // Add dependencies
 
   const options = [
-    { name: 'جميع التاريخ', value: '1' },
-    { name: 'مخصص', value: '2' }
+    { name: 'All Date', value: '1' },
+    { name: 'Custom', value: '2' }
   ];
 
   const handleSelect = (item) => {
@@ -74,8 +74,8 @@ const StatementScreen = () => {
   };
 
 
-  const tableHead = ['الباقي', 'المدفوع', 'رفع', 'الرسوم', 'التاريخ'];
-  const tableRows = marks.map(item => [item.Balance, item.CR, item.DR, item.Description, item.date]);
+  const tableHead = ['Date', 'Desc', 'DR', 'CR', 'Balance',, 'Month'];
+  const tableRows = marks.map(item => [item.date, item.Description, item.DR, item.CR, item.Balance, item.month]);
 
   return (
     <ScrollView style={styles.container1}>
@@ -83,13 +83,13 @@ const StatementScreen = () => {
         source={require('../../assets/finance.jpg')} // Your image file here
         style={styles.headerImage}
       >
-        <Text style={styles.title}>هنا تفاصيل الرسوم</Text>
+        <Text style={styles.title}>Statement</Text>
         <Text style={styles.subtitle}>Review your statement here</Text>
       </ImageBackground>
 
       {/* Custom Dropdown */}
       <View style={styles.dropdownContainer}>
-        <Text style={styles.modalTitle}>اختر التاريخ</Text>
+        <Text style={styles.modalTitle}>Select Date</Text>
         <TouchableOpacity
           style={styles.dropdownButton}
           onPress={() => setDropdownVisible(true)}
@@ -107,7 +107,7 @@ const StatementScreen = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>اختر التاريخ</Text>
+              <Text style={styles.modalTitle}>Select Date</Text>
               {options.map((option, index) => (
                 <TouchableOpacity
                   key={index}
@@ -126,7 +126,7 @@ const StatementScreen = () => {
       {selectedItem.value !== '1' && ( // Only show date pickers if 'Custom' is selected
         <>
           <View style={styles.dateContainer}>
-            <Text style={styles.dateLabel}>من</Text>
+            <Text style={styles.dateLabel}>From</Text>
             <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
               <Text>{formatDate(fromDate)}</Text>
             </TouchableOpacity>
@@ -145,7 +145,7 @@ const StatementScreen = () => {
           </View>
 
           <View style={styles.dateContainer}>
-            <Text style={styles.dateLabel}>إلى</Text>
+            <Text style={styles.dateLabel}>To</Text>
             <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
               <Text>{formatDate(toDate)}</Text>
             </TouchableOpacity>
@@ -170,14 +170,14 @@ const StatementScreen = () => {
         style={styles.generateButton}
         onPress={() => setIsGenerated(true)} // Set generated state to true
       >
-        <Text style={styles.generateButtonText}>اختر</Text>
+        <Text style={styles.generateButtonText}>Generate</Text>
       </TouchableOpacity>
 
       {/* Table for Statement */}
       {isGenerated && (
         <View style={styles.container}>
-          <Text style={styles.title}>تفاصيل الرسوم المالية</Text>
-          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+          <Text style={styles.title1}>Student Statement</Text>
+          <Table borderStyle={{ borderWidth: 1, borderColor: '#44b4d4', }}>
             <Row data={tableHead} style={styles.head} textStyle={styles.headText} />
             <Rows data={tableRows} textStyle={styles.text} />
           </Table>
@@ -191,13 +191,13 @@ const styles = StyleSheet.create({
   container1: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#44b4d4',
   },
   container: {
     backgroundColor: 'white',
     marginTop: 20,
     marginBottom: 50, // Add this line for bottom margin
-
+    borderRadius: 8
   },
   headerImage: {
     height: 200,
@@ -210,13 +210,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 19,
     fontWeight: 'bold',
-    color: '#FF9800',
+    color: '#fff',
+    alignSelf: 'center',
+    marginBottom: 8
+  },
+  title1: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: 'black',
     alignSelf: 'center',
     marginBottom: 8
   },
   subtitle: {
     fontSize: 16,
-    color: '#FFFF00',
+    color: '#fff',
     alignSelf: 'center'
 
   },
@@ -226,7 +233,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dropdownButton: {
-    flexDirection: 'row-reverse', // Reverse the order of text and icon
+    flexDirection: 'row', // Reverse the order of text and icon
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -281,18 +288,20 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 15,
     elevation: 3,
+    flexDirection: 'row', // Align items in a row
+    alignItems: 'center', // Keep text and button aligned
+    justifyContent: 'space-between', // Push label left and picker right
   },
   dateLabel: {
     fontSize: 16,
     color: '#7a7a7a',
-    marginBottom: 5,
-    textAlign: 'right'
   },
   datePicker: {
-    width: '100%',
-     },
+    alignItems: 'flex-end', // Aligns the date text to the right
+  },
+  
   generateButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: 'black',
     paddingVertical: 15,
     borderRadius: 10,
     marginTop: 20,
@@ -305,7 +314,7 @@ const styles = StyleSheet.create({
   },
   head: {
     height: 40,
-    backgroundColor: '#FF9800',
+    backgroundColor: 'black',
   },
   headText: {
     margin: 6,

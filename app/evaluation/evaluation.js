@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert ,SafeAreaView} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,7 +15,7 @@ const getCurrentDate = () => {
 const getCurrentDay = () => {
   const today = new Date();
   const options = { weekday: 'long' };
-  return today.toLocaleDateString('ar-SA', options);
+  return today.toLocaleDateString('EN-US', options);
 };
 
 const SemesterSubjects = () => {
@@ -43,19 +43,19 @@ const SemesterSubjects = () => {
 
         // Define the values to be sent in the second POST request
         const values2 = {
-          sp: 596,
+          sp: 623,
           semester_id: userData.result.semester_id,
           class_id: userData.result.class_id
         };
 
         // Make Axios POST request for values1
-        const response1 = await axios.post('https://db.al-marwaziuniversity.so/api/report', values1);
+        const response1 = await axios.post('https://mis.psu.edu.so/api/report', values1);
         const result1 = response1.data.result;
         setSemesters(result1);
         console.log('Semester (Response 1):', result1);
 
         // Make Axios POST request for values2
-        const response2 = await axios.post('https://db.al-marwaziuniversity.so/api/report', values2);
+        const response2 = await axios.post('https://mis.psu.edu.so/api/report', values2);
         const result2 = response2.data.result;
         setSubjects(result2);
         console.log('Subjects (Response 2):', result2);
@@ -117,7 +117,7 @@ const SemesterSubjects = () => {
             // Only send the rating if it's greater than 0
             if (rating > 0) {
               const values3 = {
-                sp: 597,
+                sp: 622,
                 company_id: 1,
                 student_id: userData.result.auto_id,
                 question_id: semester.id, // Use semester.id here
@@ -125,7 +125,7 @@ const SemesterSubjects = () => {
                 course_id: 1,
                 class_id: userData.result.class_id,
                 semester_id: userData.result.semester_id,
-                year_id: 2024,
+                year_id: 2025,
                 semester_session: 1,
                 stars: rating,
                 user_id: 1,
@@ -133,7 +133,7 @@ const SemesterSubjects = () => {
               };
 
               // Send the rating via POST request
-              const response3 = await axios.post('https://db.al-marwaziuniversity.so/api/report', values3);
+              const response3 = await axios.post('https://mis.psu.edu.so/api/report', values3);
               console.log('Rating submitted:', response3.data);
             }
           }
@@ -147,6 +147,7 @@ const SemesterSubjects = () => {
   };
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <Text style={styles.dateText}>{currentDate}</Text>
@@ -155,29 +156,31 @@ const SemesterSubjects = () => {
 
       <View style={styles.semesterContainer}>
         <FontAwesome name="bookmark" size={24} color="#FF9800" style={styles.icon} />
-        <Text style={styles.semesterText}>مستوى الحالي</Text>
+        <Text style={styles.semesterText}>Current Semester</Text>
       </View>
 
       {subjects.map((subject) => (
-        <View key={subject.id}>
-          <TouchableOpacity
-            style={styles.subjectContainer}
-            onPress={() => toggleExpand(subject.id)}
-          >
-             <FontAwesome
-              name={expandedSubject === subject.id ? 'chevron-up' : 'chevron-down'}
-              size={18}
-              color="gray"
-              style={styles.arrowIcon}
-            />
-                        <Text style={styles.subjectText}>{subject.course}</Text>
+  <View key={subject.id}>
+    <TouchableOpacity
+      style={styles.subjectContainer}
+      onPress={() => toggleExpand(subject.id)}
+    >
+      {/* Subject Icon on the Left */}
+      <View style={styles.subjectIcon}>
+        <FontAwesome name="file-text" size={24} color="orange" />
+      </View>
 
-            <View style={styles.subjectIcon}>
-              <FontAwesome name="file-text" size={24} color="orange" />
-            </View>
+      {/* Subject Text in the Middle */}
+      <Text style={styles.subjectText}>{subject.course}</Text>
 
-           
-          </TouchableOpacity>
+      {/* Arrow Icon on the Right */}
+      <FontAwesome
+        name={expandedSubject === subject.id ? 'chevron-up' : 'chevron-down'}
+        size={18}
+        color="gray"
+        style={styles.arrowIcon}
+      />
+    </TouchableOpacity>
 
           {expandedSubject === subject.id && (
             <View style={styles.expandedContainer}>
@@ -202,29 +205,37 @@ const SemesterSubjects = () => {
       <TouchableOpacity
         style={[
           styles.saveButton,
-          { backgroundColor: isAnyRatingGiven() ? '#236b17' : '#cccccc' }
+          { backgroundColor: isAnyRatingGiven() ? '#0a0a0a' : '#cccccc' }
         ]}
         onPress={handleSave}
         disabled={!isAnyRatingGiven()} // Disable the button if no rating is given
       >
-        <Text style={styles.saveText}>حفظ</Text>
+        <Text style={styles.saveText}>Save</Text>
       </TouchableOpacity>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    backgroundColor: '#44b4d4',
+
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#44b4d4',
   },
   icon: {
     position: 'absolute',
-    right: 0, // Align icon to the right
     padding: 10,
+    
   },
   header: {
     alignItems: 'center',
     marginBottom: 20,
+    
   },
   dateText: {
     fontSize: 18,
@@ -232,7 +243,7 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 20,
-    color: "#236b17",
+    color: "#0a0a0a",
   },
   semesterContainer: {
     flexDirection: 'row',
@@ -243,17 +254,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   semesterText: {
-    marginRight: 25,
+    marginLeft: 25,
     fontSize: 16,
-    color: "#236b17",
+    color: "#0a0a0a",
     fontWeight: 'bold',
-    textAlign: 'right', // Align text content to the right
     flex: 1, // Ensure the text takes up full space within the row
   },
   subjectContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between', // Ensures icons are spaced correctly
     marginBottom: 10,
     backgroundColor: '#fff',
     padding: 15,
@@ -261,21 +271,22 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   subjectIcon: {
-    marginRight: 10,
+    marginRight: 10, // Adds space between the icon and text
   },
   subjectText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginRight: 15
+    flex: 1, // Allows text to take available space
   },
   arrowIcon: {
-    marginRight: 'auto',
+    marginLeft: 'auto', // Pushes the arrow to the right
   },
   expandedContainer: {
     padding: 15,
     backgroundColor: '#f9f9f9',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    marginBottom: 20
   },
   teacherName: {
     fontSize: 16,

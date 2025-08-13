@@ -19,10 +19,10 @@ const ComplaintRegistrationScreen = () => {
       if (jsonValue !== null) {
         const userData = JSON.parse(jsonValue);
         const values = {
-          sp: 618,
+          sp: 616,
           userId: userData.id,
         };
-        const response = await axios.post('https://db.al-marwaziuniversity.so/api/report', values); 
+        const response = await axios.post('https://mis.psu.edu.so/api/report', values); 
         const result = response.data.result;
         setOptions(result);
         setLoading(false);
@@ -44,7 +44,7 @@ const ComplaintRegistrationScreen = () => {
 
   const checkDuplicateDescription = async () => {
     try {
-      const response = await axios.post('https://db.al-marwaziuniversity.so/api/check-duplicate', { description });
+      const response = await axios.post('https://mis.psu.edu.so/api/check-duplicate', { description });
       return response.data.isDuplicate;
     } catch (error) {
       console.error('Error checking for duplicates:', error);
@@ -53,8 +53,8 @@ const ComplaintRegistrationScreen = () => {
   };
 
   const handleSubmit = async () => {
-    if (!description || !selectedOffice) {
-      Alert.alert('Validation Error', 'اختر الجهة المشتكى منها.');
+    if (!title || !description || !selectedOffice) {
+      Alert.alert('Fadlan Iska Hubi', 'Dooro xafiiska ka cabaneysid oo qor cabashadaada.');
       return;
     }
 
@@ -71,17 +71,19 @@ const ComplaintRegistrationScreen = () => {
         sp: 617,
         company_id: 1,
         student_id: userData.result.auto_id,
+        title: title,
         description: description,
         office_id: selectedOffice?.id,
         user_id: 1,
         date: date,
       };
 
-      const response = await axios.post('https://db.al-marwaziuniversity.so/api/report', complaintData);
+      const response = await axios.post('https://mis.psu.edu.so/api/report', complaintData);
       
       if (response.status === 200) {
         console.log('Complaint registered successfully:', response.data);
         Alert.alert('Success', 'Complaint registered successfully!');
+        setTitle('');
         setDescription('');
         setSelectedOffice(null);
       } else {
@@ -94,23 +96,35 @@ const ComplaintRegistrationScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>اكتب شكواك هنا</Text>
+      {/* Title Complaint Field */}
+      <Text style={styles.label}>Title Complaint</Text>
+      <TextInput
+        style={[styles.input, styles.text]}
+        placeholder="Write your Title Complaint here"
+        value={title}
+        onChangeText={setTitle}
+        multiline={true}
+      />
+
+      {/* Complaint Field */}
+      <Text style={styles.label}>Complaint</Text>
       <TextInput
         style={[styles.input, styles.textArea]}
-        placeholder="اكتب شكواك هنا"
+        placeholder="Write your complaint here"
         value={description}
         onChangeText={setDescription}
         multiline={true}
       />
 
-      <Text style={styles.label}>اختر الجهة المشتكى منها</Text>
+      {/* Choose Office Dropdown */}
+      <Text style={styles.label}>Choose the Office</Text>
       <View style={styles.dropdownContainer}>
         <TouchableOpacity
           style={styles.dropdownButton}
           onPress={() => setDropdownVisible(true)}
         >
           <Text style={styles.dropdownButtonText}>
-            {selectedOffice ? selectedOffice.name : "اختر الجهة المشتكى منها"}
+            {selectedOffice ? selectedOffice.name : "Choose the Office you complain about"}
           </Text>
           <Icon name={isDropdownVisible ? 'chevron-up' : 'chevron-down'} size={15} color="#333" />
         </TouchableOpacity>
@@ -123,7 +137,7 @@ const ComplaintRegistrationScreen = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>اختر الجهة المشتكى منها</Text>
+              <Text style={styles.modalTitle}>Choose the Office</Text>
               {loading ? (
                 <Text>Loading options...</Text>
               ) : options.length > 0 ? (
@@ -144,11 +158,12 @@ const ComplaintRegistrationScreen = () => {
         </Modal>
       </View>
 
+      {/* Save Button */}
       <TouchableOpacity
-        style={[styles.saveButton, { backgroundColor: '#FF9800' }]}
+        style={[styles.saveButton, { backgroundColor: '#0a0a0a' }]}
         onPress={handleSubmit}
       >
-        <Text style={styles.saveText}>حفظ</Text>
+        <Text style={styles.saveText}>Save</Text>
       </TouchableOpacity>
     </View>
   );
@@ -158,14 +173,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#236b17',
+    backgroundColor: '#44b4d4',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#fff',
-    textAlign: 'right', // Aligns text for RTL
   },
   input: {
     height: 40,
@@ -178,7 +192,9 @@ const styles = StyleSheet.create({
   },
   textArea: {
     height: 80,
-    textAlign: 'right'
+  },
+  text: {
+    height: 40,
   },
   dropdownContainer: {
     width: '100%',
@@ -186,7 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dropdownButton: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',

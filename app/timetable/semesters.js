@@ -27,7 +27,7 @@ const SemesterItem = ({ semester }) => {
 
 const SemestersList = () => {
   const [semesters, setSemesters] = useState([]);
-  const url = 'https://db.al-marwaziuniversity.so/api/report'
+  const url = 'https://mis.psu.edu.so/api/report'
 
   const fetchSemesters = async () => {
       
@@ -36,7 +36,7 @@ const SemestersList = () => {
     if (jsonValue != null) {
         const userData = JSON.parse(jsonValue);
         const values = {
-            sp: 616,
+            sp: 615,
             class_id: userData.result.class_id,
             semester_id: userData.result.semester_id
 
@@ -47,6 +47,8 @@ const SemestersList = () => {
         const result = response.data.result;
             setSemesters(result);
         
+      console.log('Fetched semesters:', result); // ✅ Log result in terminal
+
     }
         
 
@@ -63,28 +65,29 @@ useEffect(()=>{
     fetchSemesters();
 },[])
 
+const SemesterItem = ({ semester }) => {
+  return (
+    <TouchableOpacity onPress={() => router.push('timetable/timetable?semester_id=' + semester.day_id)}>
+      <View style={styles.itemContainer}>
+        
+        {/* Icon FIRST */}
+        <View style={styles.iconContainer}>
+          <Icon name="calendar-clock" size={24} color="#fff" />
+        </View>
 
-console.log('semester:', semesters)
-  const renderItem = ({ item }) => (
-    <Link
-        style={styles.itemContainer}
-        href={''}
-    >
+        {/* Day Name AFTER */}
+        <Text style={styles.itemText}>{semester.day}</Text>
 
-<View style={styles.itemContainer}>
-      <View style={styles.iconContainer}>
-      <Icon name="calendar-clock" size={24} color="#fff" />
       </View>
-      <Text style={styles.itemText}>{item.day}</Text>
-    </View>
+    </TouchableOpacity>
+  );
+};
 
-   
-    </Link>
-);
+
 
   return (
     <View style={styles.container}>
-        <Text style={styles.semes}>الأيام</Text>
+        <Text style={styles.semes}>Days</Text>
         <FlatList
         data={semesters}
         keyExtractor={(item) => item.day_id.toString()} // Assuming each semester has an `id` field
@@ -98,7 +101,7 @@ console.log('semester:', semesters)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#236b17',
+    backgroundColor: '#44b4d4',
     padding: 20,
   },
   loadingContainer: {
@@ -110,13 +113,12 @@ const styles = StyleSheet.create({
     color:'white',
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'right',
     marginBottom: 15,
 
   },
   itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'row', // Ensures icon appears first, then text
+    alignItems: 'center', // Aligns items vertically centered
     backgroundColor: '#fff',
     padding: 10,
     marginVertical: 5,
@@ -126,8 +128,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 3,
-        justifyContent: 'flex-end', // Aligns icon and text to the right
-
   },
   iconContainer: {
     width: 40,
@@ -136,7 +136,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF9800',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: 10, // Ensures spacing between icon and text
+  },
+  itemText: {
+    fontSize: 18,
+    color: '#333',
+    marginLeft: 10, // Pushes text to the right of the icon
   },
   iconText: {
     color: '#fff',
@@ -144,12 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     
   },
-  itemText: {
-    fontSize: 18,
-    color: '#333',
-    margin: 10
 
-  },
 });
 
 export default SemestersList;

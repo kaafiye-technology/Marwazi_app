@@ -27,7 +27,7 @@ const Dashboard = () => {
         console.log("userdata", userData);
         setUser(userData);
       } else {
-        router.push("/welcome/welcome");
+        router.push("/welcome/login");
       }
     } catch (error) {
       console.error("Error loading data", error);
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
   const CheckVersion = async () => {
     try {
-      const res = await axios.post("https://db.al-marwaziuniversity.so/api/save", values);
+      const res = await axios.post("https://mis.psu.edu.so/api/save", values);
       setUpdate(res.data.message);
     } catch (error) {
       console.error("Error:", error);
@@ -64,12 +64,12 @@ const Dashboard = () => {
       <View style={styles.logoContainer}>
         <Image
           source={{
-            uri: "https://al-marwaziuniversity.so/uploads/ktc_edit_sp/logo/marwaziunivbersity.png_ktceditsp_20240521065859.png",
+            uri: "https://mis.psu.edu.so/uploads/ktc_edit_sp/logo/logopsu.png_ktceditsp_20240924070249.png",
           }}
           style={styles.headerImg}
           alt="Logo"
         />
-        <Text style={styles.logoText}>بوابة الطالب/ ــة</Text>
+        <Text style={styles.logoText}>Student Portal</Text>
       </View>
 
       {/* Features */}
@@ -79,14 +79,14 @@ const Dashboard = () => {
           onPress={() => router.push("/users/profile")}
         >
           <Icon name="account" size={30} color="#9C27B0" />
-          <Text style={styles.featureText}>ملف الطالب</Text>
+          <Text style={styles.featureText}>Student Profile</Text>
         </Pressable>
         <Pressable
           style={styles.feature}
           onPress={() => router.push("/timetable/semesters")}
         >
           <Icon name="calendar-outline" size={30} color="#2196F3" />
-          <Text style={styles.featureText}>الجدول الدراسي</Text>
+          <Text style={styles.featureText}>Timetable</Text>
         </Pressable>
 
         <Pressable
@@ -94,7 +94,7 @@ const Dashboard = () => {
           onPress={() => router.push("/attendance/attendence")}
         >
           <Icon name="check-circle-outline" size={30} color="#9C27B0" />
-          <Text style={styles.featureText}>الحضور</Text>
+          <Text style={styles.featureText}>Attendance</Text>
         </Pressable>
 
         <Pressable
@@ -102,7 +102,7 @@ const Dashboard = () => {
           onPress={() => router.push("/finance/semesters")}
         >
           <Icon name="cash" size={30} color="#FF9800" />
-          <Text style={styles.featureText}>الرسوم المالية</Text>
+          <Text style={styles.featureText}>Finance</Text>
         </Pressable>
 
         <Pressable
@@ -110,7 +110,7 @@ const Dashboard = () => {
           onPress={() => router.push("/examination/semesters")}
         >
           <Icon name="file-document-outline" size={30} color="#4CAF50" />
-          <Text style={styles.featureText}>نتائج الإمتحانات</Text>
+          <Text style={styles.featureText}>Exam Results</Text>
         </Pressable>
 
         <Pressable
@@ -118,7 +118,7 @@ const Dashboard = () => {
           onPress={() => router.push("/evaluation/evaluation")}
         >
           <Icon name="chart-bar" size={30} color="#FF9800" />
-          <Text style={styles.featureText}>التقييم</Text>
+          <Text style={styles.featureText}>Evaluation</Text>
         </Pressable>
 
         <Pressable
@@ -126,15 +126,9 @@ const Dashboard = () => {
           onPress={() => router.push("/complaint/complaint")}
         >
           <Icon name="alert-circle-outline" size={30} color="red" />
-          <Text style={styles.featureText}>الشكاوى</Text>
+          <Text style={styles.featureText}>Student Complaint</Text>
         </Pressable>
-        <Pressable
-          style={styles.feature}
-          onPress={() => router.push("/notification/MessageScreen")}
-        >
-          <Icon name="bell" size={30} color="#2196F3" />
-          <Text style={styles.featureText}>إشعارات</Text>
-        </Pressable>
+       
       </View>
     </ScrollView>
   );
@@ -144,7 +138,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#236b17",
+    backgroundColor: "#44b4d4",
     paddingBottom: 20, // Prevent cutoff on small screens
   },
   logoContainer: {
@@ -159,34 +153,36 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   featuresContainer: {
-    marginTop: 20,
+    marginTop: 30,
   },
   feature: {
-    flexDirection: "row-reverse", // Reverse the icon and text
+    flexDirection: "row", // Change from "row-reverse" to "row"
     alignItems: "center",
-    justifyContent: "space-between", // Align icon and text evenly
-    width: width * 0.9, // Make the feature responsive
-    alignSelf: "center", // Center features
+    justifyContent: "space-between",
+    width: width * 0.9,
+    alignSelf: "center",
     backgroundColor: "#FFF",
-    padding: 13,
-    marginVertical: 6,
+    padding: 15,
+    marginVertical: 9,
     borderRadius: 15,
     elevation: 4,
   },
   featureText: {
-    fontSize: 18,
-    marginRight: 20, // Adds space between the text and the icon
+    fontSize: 20,
+    marginLeft: 20, // Change marginRight to marginLeft to space it from the icon
     color: "#333",
-    textAlign: "right", // Right-align the text
-    flex: 1, // Make the text take up available space to push it to the right
+    textAlign: "left", // Change text alignment to left
+    flex: 1,
+    fontWeight:'bold'
   },
+    
   headerImg: {
     width: 150,
     height: 150,
     alignSelf: "center",
     marginBottom: 36,
     marginTop: 20, // Add a margin top to push the image down
-    borderRadius: 60,
+    borderRadius: 70,
   },
   
 });

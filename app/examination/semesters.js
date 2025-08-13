@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const { width, height } = Dimensions.get('window');  // Get screen width and height
 
 const Semesters = () => {
-  const url = 'https://db.al-marwaziuniversity.so/api/report';
+  const url = 'https://mis.psu.edu.so/api/report';
 
   const [balance, setBalance] = useState([]);
   const [secondData, setSecondData] = useState([]); // For the second API response
@@ -52,20 +52,20 @@ const Semesters = () => {
     <View style={styles.container}>
       <View style={styles.feature1} >
         <Image source={require('../../assets/exam.jpg')} style={styles.image} />
-        <Text style={styles.title}>نتائج الإمتحانات</Text>
-        <Text style={styles.subtitle}>Examination Results</Text>
+        <Text style={styles.title}>Examination Results</Text>
+        <Text style={styles.subtitle}>Puntland State University PSU</Text>
       </View>
 
           <Pressable style={styles.feature} onPress={() => router.push('/examination/transcript')}>
             <Icon name="dots-grid" size={30} color="#FF9800" />
-            <Text style={styles.featureText}>كشف الدرجات</Text>
-            <Icon name="arrow-left" size={25} color="black" style={styles.icon} />
+            <Text style={styles.featureText}>Show as Transcript</Text>
+            <Icon name="arrow-right" size={25} color="black" style={styles.icon} />
           </Pressable>
 
           <Pressable style={styles.feature} onPress={() => router.push('/examination/semesterwise')}>
             <Icon name="calendar-blank" size={30} color="#9C27B0" />
-            <Text style={styles.featureText}>نتائج المستويات</Text>
-            <Icon name="arrow-left" size={25} color="black" style={styles.icon} />
+            <Text style={styles.featureText}>Show as Semester Wise</Text>
+            <Icon name="arrow-right" size={25} color="black" style={styles.icon} />
           </Pressable>
     </View>
   );
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#236b17',
+    backgroundColor: '#44b4d4',
   },
   image: {
     width: '100%',   
@@ -100,14 +100,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: width * 0.06,  // Responsive font size
     fontWeight: 'bold',
-    color: '#FFFF00',
+    color: '#fff',
   },
   subtitle: {
     fontSize: width * 0.04,  // Responsive font size
-    color: '#FFFF00',
+    color: '#fff',
   },
   feature: {
-    flexDirection: 'row-reverse', // Reverse the icon and text
+    flexDirection: 'row', // Reverse the icon and text
     alignItems: 'center',
     backgroundColor: '#FFF',
     padding: Platform.OS === 'ios' ? 20 : 15,  // Different padding for iOS and Android
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     marginRight: 20,  // Adds space between the text and the first icon
   },
   icon: {
-    marginRight: 'auto',  // Pushes the arrow icon to the left automatically
+    marginLeft: 'auto',  // Pushes the arrow icon to the left automatically
   },
  
 });

@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const { width } = Dimensions.get('window');  // Get the screen width for responsive design
 
 const semesters = () => {
-  const url = 'https://db.al-marwaziuniversity.so/api/report';
+  const url = 'https://mis.psu.edu.so/api/report';
 
   const [balance, setBalance] = useState([]);
   const [secondData, setSecondData] = useState([]); 
@@ -47,32 +47,32 @@ const semesters = () => {
     <View style={styles.container}>
       <View style={styles.feature1}>
         <Image source={require('../../assets/finance.jpg')} style={styles.image} />
-        <Text style={styles.title}>المعلومات المالية</Text>
-        <Text style={styles.subtitle}>Finance Information</Text>
+        <Text style={styles.title}>Finance Information</Text>
+        <Text style={styles.subtitle}>Puntland State University PSU</Text>
       </View>
 
       <View style={styles.feature}>
         <Icon name="gift-outline" size={30} color="#FF9800" />
-        <Text style={styles.featureText}>الرسوم الشهرية</Text>
+        <Text style={styles.featureText}>Term Fee</Text>
         <Text style={styles.resultText}>${secondData?.fee}</Text>
       </View>
 
       <View style={styles.feature}>
         <Icon name="cash" size={30} color="#FF9800" />
-        <Text style={styles.featureText}>الباقي</Text>
+        <Text style={styles.featureText}>Balance</Text>
         <Text style={styles.resultText1}>${balance?.balance}</Text>
       </View>
 
       <Pressable style={styles.feature} onPress={() => router.push('/finance/report')}>
         <Icon name="percent" size={30} color="#9C27B0" />
-        <Text style={styles.featureText}>تفاصيل الرسوم المالية</Text>
-        <Icon name="arrow-left" size={25} color="black" style={styles.icon} />
+        <Text style={styles.featureText}>Finance Statement Details</Text>
+        <Icon name="arrow-right" size={25} color="black" style={styles.icon} />
       </Pressable>
 
       <Pressable style={styles.feature} onPress={() => router.push('/finance/statement')}>
         <Icon name="file-document-outline" size={30} color="#9C27B0" />
-        <Text style={styles.featureText}>جميع الرسوم المسددة</Text>
-        <Icon name="arrow-left" size={25} color="black" style={styles.icon} />
+        <Text style={styles.featureText}>All Receipts</Text>
+        <Icon name="arrow-right" size={25} color="black" style={styles.icon} />
       </Pressable>
     </View>
   );
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#236b17',
+    backgroundColor: '#44b4d4',
   },
   image: {
     width: '100%',
@@ -107,14 +107,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFFF00',
+    color: '#fff',
   },
   subtitle: {
     fontSize: 16,
-    color: '#FFFF00',
+    color: '#fff',
+    
   },
   feature: {
-    flexDirection: 'row-reverse', // Reverse the icon and text
+    flexDirection: 'row', // Reverse the icon and text
     alignItems: 'center',
     backgroundColor: '#FFF',
     padding: Platform.OS === 'ios' ? 20 : 15,  // Different padding for iOS and Android
@@ -129,19 +130,19 @@ const styles = StyleSheet.create({
     marginRight: 20,  // Adds space between the text and the first icon
   },
   icon: {
-    marginRight: 'auto',  // Pushes the arrow icon to the left automatically
+    marginLeft: 'auto',  // Pushes the arrow icon to the left automatically
   },
   resultText: {
     fontSize: 18,
-    marginRight: 'auto',
     color: 'blue',
     fontWeight: 'bold',
+    marginLeft: 'auto',
   },
   resultText1: {
     fontSize: 18,
-    color: '#236b17',
+    color: 'blue',
     fontWeight: 'bold',
-    marginRight: 'auto',
-  },
+    marginLeft: 'auto',
+    },
   
 });

@@ -1,142 +1,179 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
-import { Text, Card } from 'react-native-elements';
-import { Link, useLocalSearchParams } from 'expo-router';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
+import { Feather } from '@expo/vector-icons';
 
+export default function ScheduleScreen() {
+  const [scheduleData, setScheduleData] = useState([]);
+  const { semester_id } = useLocalSearchParams();
+  const [error, setError] = useState(null);
 
-// const App = () => {
-  // const tableHead = ['Subject', 'Marks', 'Status'];
-  // const tableData = [
-  //   ['الفرائض2', '59.5', 'passed'],
-  //   ['قاعة بحث', '72', 'passed'],
-  //   ['طرق التدريس', '73', 'passed'],
-  //   ['فقه العبادات4', '67', 'passed'],
-  // ];
-  const App = () => {
-    const tableHead = ['ألمادة', 'الحصة', 'الأيام'];
-    // const tableData = [
-    //   {course:'الفرائض2', total:'59.5', status:'passed'},
-    //   {course:'قاعة بحث', total:'72', status:'passed'},
-    //   {course:'طرق التدريس', total:'73', status:'passed'},
-    //   {course:'فقه العبادات4', total:'67', status:'passed'},
-    // ];
-
-
-  const [marks, setMarks] = useState([]);
-  const url = 'https://db.al-marwaziuniversity.so/api/report'
-    const { semester_id } = useLocalSearchParams();
-  const fetchMarks = async () => {
-      
+  const fetchSchedule = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem('user');
-    if (jsonValue != null) {
+      const jsonValue = await AsyncStorage.getItem('user');
+      if (jsonValue) {
         const userData = JSON.parse(jsonValue);
         const values = {
-            sp: 545,
-            class_id: userData.result.class_id,
-            semester_id: userData.result.semester_id,
-            day_id:semester_id
-
-        }
-
-        const response = await axios.post(url,values);
-        
+          sp: 545,
+          class_id: userData.result.class_id,
+          semester_id: userData.result.semester_id,
+          day_id: semester_id,
+        };
+        const response = await axios.post('https://mis.psu.edu.so/api/report', values);
         const result = response.data.result;
-            setMarks(result);
-        
-    }
-        
 
-       
+        setScheduleData(result);
+      }
     } catch (err) {
-       // setError(err.message);
-       console.log('eeror', err)
-    } finally {
-      //  setLoading(false);
+      console.log('Fetch error:', err);
+      setError('Failed to load schedule.');
     }
-};
+  };
 
-useEffect(()=>{
-    fetchMarks();
-},[])
+  useEffect(() => {
+    fetchSchedule();
+  }, [semester_id]);
 
-
-  const tableRows = marks.map(item => [item.course,item.period,item.day]);
-// Step 1: Extract the 'total' values
-const totalValues = marks.map(item => parseFloat(item.total));
-
-// Step 2: Sum the values
-const sum = totalValues.reduce((acc, value) => acc + value, 0);
-const average = sum / marks.length;
-const roundedNumber = average.toFixed(2);
-
-console.log('Sum of totals:', sum);
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Card containerStyle={styles.card}>
-          <Text h3 style={styles.title}>الجدول</Text>
-          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-            <Row data={tableHead} style={styles.head} textStyle={styles.headText} />
-            <Rows data={tableRows} textStyle={styles.text} />
-          </Table>
-        </Card>
-      </ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#44b4d4" }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Time Table</Text>
+        </View>
+
+        <View style={styles.scheduleContainer}>
+  <Text style={styles.todayText}>
+    {scheduleData.length > 0 ? scheduleData[0].day : 'Day'}
+  </Text>
+  {error && <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>}
+
+  <FlatList
+    data={scheduleData}
+    keyExtractor={(item, index) => index.toString()}
+    renderItem={({ item }) => (
+      <View style={styles.card}>
+        <Text style={styles.time}> {item.period.split(' ')[0]}{"\n"}
+        {item.period.split(' ').slice(1, 4).join(' ')}</Text>
+        <View style={styles.details}>
+          <Text style={styles.subject}>{item.course}</Text>
+          <View style={styles.row}>
+            <Feather name="map-pin" size={14} color="#ffbc00" />
+            <Text style={styles.room}>{item.class}</Text>
+          </View>
+          <View style={styles.row}>
+            <Image
+              source={{
+                uri:
+                  item.avatar ||
+                  'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
+              }}
+              style={styles.avatar}
+            />
+            <Text style={styles.teacher}>{item.lecturer}</Text>
+          </View>
+        </View>
+        {item.assessment && (
+          <View style={styles.assessmentBadge}>
+            <Text style={styles.assessmentText}>{item.assessment}</Text>
+          </View>
+        )}
+      </View>
+    )}
+  />
+</View>
+
+      </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-  },
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#236b17',
+    padding: 20,
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  scheduleContainer: {
+    flex: 1,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 20,
+    padding: 20,
+    marginTop: 30,
+  },
+  todayText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
   },
   card: {
-    width: '100%',
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    marginBottom: 16,
     padding: 16,
-    backgroundColor: '#f0f0f0',
-    borderWidth: 0,
-    shadowColor: 'transparent',
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  time: {
+    fontWeight: "bold",
+    width: 70,
+  },
+  details: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  subject: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  room: {
+    fontSize: 13,
+    marginLeft: 5,
+    color: "#555",
+  },
+  teacher: {
+    fontSize: 13,
+    marginLeft: 8,
+    color: "#333",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 2,
+  },
+  avatar: {
+    width: 20,
+    height: 20,
     borderRadius: 10,
   },
-  title: {
-    textAlign: 'center',
-    marginBottom: 16,
+  assessmentBadge: {
+    backgroundColor: "#ffe5e5",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    alignSelf: "flex-start",
   },
-  head: {
-    height: 40,
-    backgroundColor: '#FF9800',
-  },
-  headText: {
-    margin: 6,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  text: {
-    margin: 6,
-    textAlign: 'center',
-  },
-  footer: {
-    height: 40,
-    backgroundColor: '#3bcd6b',
-  },
-  footerText: {
-    margin: 6,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
+  assessmentText: {
+    color: "#d00",
+    fontWeight: "bold",
   },
 });
-
-export default App;
